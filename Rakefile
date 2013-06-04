@@ -6,6 +6,10 @@ task :name, [:first_name, :last_name] do |t, args|
   puts "Last  name is #{args.last_name}"
 end
 
-task :create_dictionary[:filename] do |t,args|
+# Filenames here is a comma separated list of file sources
 
+task :create_dictionary, [:filenames] do |t,args|
+  markov = MarkyMarkov::Dictionary.new('dictionary', 3) # Saves/opens dictionary.mmd
+  args.filenames.split(",").map{|fn| markov.parse_file fn }
+  markov.save_dictionary! # Saves the modified dictionary/creates one if it didn't exist.
 end
